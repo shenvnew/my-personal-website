@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Github, Linkedin, Mail, Sparkles } from 'lucide-react'
-import { sectionFadeUp } from '../utils/animations'
+import { sectionFadeUp } from '../utils/Animations'
 import StatCard from './StatCard'
 
 export default function Hero() {
