@@ -1,26 +1,31 @@
-import type React from 'react'
+import type { InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
 
-type InputProps = {
+interface BaseProps {
   label: string
-  placeholder: string
-  type?: React.HTMLInputTypeAttribute
+  error?: string
 }
 
-export default function Input({
-  label,
-  placeholder,
-  type = 'text',
-}: InputProps) {
+type InputProps =
+  | ({ as?: 'input' } & BaseProps & InputHTMLAttributes<HTMLInputElement>)
+  | ({ as: 'textarea' } & BaseProps & TextareaHTMLAttributes<HTMLTextAreaElement>)
+
+export default function Input(props: InputProps) {
+  const { label, error } = props
+
+  const baseClasses =
+    'mt-2 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none backdrop-blur-md transition placeholder:text-slate-500 focus:border-cyan-400/40'
+
   return (
-    <div>
-      <label className="mb-2 block text-sm font-medium text-slate-200">
-        {label}
-      </label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="w-full rounded-2xl border border-white/10 bg-slate-900/60 px-4 py-3 text-white outline-none placeholder:text-slate-500 transition focus:border-blue-400/40 focus:bg-slate-900"
-      />
-    </div>
+    <label className="block">
+      <span className="text-sm font-medium text-slate-200">{label}</span>
+
+      {props.as === 'textarea' ? (
+        <textarea {...props} className={baseClasses} />
+      ) : (
+        <input {...props} className={baseClasses} />
+      )}
+
+      {error && <p className="mt-2 text-xs text-rose-300">{error}</p>}
+    </label>
   )
 }

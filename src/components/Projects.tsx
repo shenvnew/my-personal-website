@@ -1,125 +1,111 @@
-import type React from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, Github } from 'lucide-react'
-import type { Project, ProjectCategory } from '../types'
-import { cardHover, sectionFadeUp } from '../utils/Animations'
+import { useState } from 'react'
+import { projects } from '../data/portfolioData'
+import type { Project } from '../types'
+import { cardPop, staggerContainer } from '../utils/Animations'
+import ProjectModal from './ProjectModal'
 import SectionHeading from './SectionHeading'
 
-type ProjectsProps = {
-  selectedCategory: ProjectCategory
-  setSelectedCategory: React.Dispatch<React.SetStateAction<ProjectCategory>>
-  filteredProjects: Project[]
-  onProjectClick: React.Dispatch<React.SetStateAction<Project | null>>
-}
-
-export default function Projects({
-  selectedCategory,
-  setSelectedCategory,
-  filteredProjects,
-  onProjectClick,
-}: ProjectsProps) {
-  const categories: ProjectCategory[] = ['All', 'Web App', 'UI/UX', 'Backend']
+export default function Projects() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
   return (
     <section id="projects" className="scroll-mt-24 px-6 py-20 lg:px-8">
-      <motion.div
-        variants={sectionFadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="mx-auto max-w-7xl"
-      >
+      <div className="mx-auto max-w-7xl">
         <SectionHeading
           eyebrow="Projects"
-          title="Selected work and creative builds"
-          description="A collection of projects that highlight my skills in frontend development, UI design, and backend integration."
+          title="Selected work built with quality, clarity, and intention."
+          description="A showcase of projects that reflect both technical capability and polished visual execution."
         />
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          {categories.map((category) => {
-            const active = selectedCategory === category
-            return (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
-                  active
-                    ? 'bg-gradient-to-r from-blue-500 to-violet-500 text-white shadow-lg shadow-violet-900/20'
-                    : 'border border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {category}
-              </button>
-            )
-          })}
-        </div>
-
-        <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredProjects.map((project) => (
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="mt-12 grid gap-6 lg:grid-cols-3"
+        >
+          {projects.map((project) => (
             <motion.article
               key={project.id}
-              variants={cardHover}
-              initial="rest"
-              whileHover="hover"
-              className="group overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 shadow-xl shadow-slate-950/20 backdrop-blur-xl"
+              variants={cardPop}
+              className="group overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:border-cyan-400/20"
             >
-              <div className="relative h-56 overflow-hidden">
+              <div className="overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                <div className="absolute left-4 top-4 rounded-full border border-white/10 bg-slate-900/70 px-3 py-1 text-xs text-blue-200 backdrop-blur-sm">
-                  {project.category}
-                </div>
               </div>
 
-              <div className="space-y-4 p-6">
-                <div>
-                  <h3 className="text-xl font-semibold">{project.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">
-                    {project.description}
-                  </p>
-                </div>
+              <div className="p-6">
+                <p className="text-xs uppercase tracking-[0.2em] text-cyan-300">
+                  {project.category}
+                </p>
 
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((item) => (
+                <h3 className="mt-2 text-xl font-semibold text-white">
+                  {project.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-slate-400">
+                  {project.description}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.tech.slice(0, 4).map((tech) => (
                     <span
-                      key={item}
-                      className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300"
+                      key={tech}
+                      className="rounded-full border border-white/10 bg-slate-900/60 px-3 py-1 text-xs text-slate-300"
                     >
-                      {item}
+                      {tech}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex items-center gap-3 pt-2">
-                  <a
-                    href={project.demo}
-                    className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/15"
+                <div className="mt-6 flex items-center justify-between">
+                  <button
+                    onClick={() => setSelectedProject(project)}
+                    className="text-sm font-medium text-white transition hover:text-cyan-300"
                   >
-                    Live Demo <ExternalLink size={16} />
-                  </a>
-                  <a
-                    href={project.github}
-                    className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:bg-white/10"
-                  >
-                    GitHub <Github size={16} />
-                  </a>
-                </div>
+                    View Details
+                  </button>
 
-                <button
-                  onClick={() => onProjectClick(project)}
-                  className="w-full rounded-xl border border-blue-400/20 bg-blue-500/10 px-4 py-3 text-sm font-medium text-blue-100 transition hover:bg-blue-500/15"
-                >
-                  View Details
-                </button>
+                  <div className="flex items-center gap-3">
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-slate-300 transition hover:text-white"
+                      >
+                        <Github size={18} />
+                      </a>
+                    )}
+
+                    {project.live && (
+                      <a
+                        href={project.live}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-slate-300 transition hover:text-white"
+                      >
+                        <ExternalLink size={18} />
+                      </a>
+                    )}
+                  </div>
+                </div>
               </div>
             </motion.article>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
+
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   )
 }

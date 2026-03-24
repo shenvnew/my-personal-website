@@ -1,79 +1,61 @@
-import type React from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
-import { NAV_LINKS } from '../data/portfolioData'
+import { useState } from 'react'
+import { navItems } from '../data/portfolioData'
 
-type NavbarProps = {
-  activeSection: string
-  mobileOpen: boolean
-  setMobileOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+export default function Navbar() {
+  const [open, setOpen] = useState(false)
 
-export default function Navbar({
-  activeSection,
-  mobileOpen,
-  setMobileOpen,
-}: NavbarProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <a href="#home" className="flex items-center gap-2 text-lg font-semibold tracking-wide">
-          <span className="rounded-xl border border-white/10 bg-white/5 px-3 py-1 text-sm text-blue-200 shadow-lg shadow-blue-900/20">
-            MyPortfolio
-          </span>
+        <a href="#home" className="text-lg font-semibold tracking-wide text-white">
+          AW<span className="text-cyan-300">.</span>
         </a>
 
-        <nav className="hidden items-center gap-2 md:flex">
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href.replace('#', '')
-            return (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`rounded-full px-4 py-2 text-sm transition-all duration-300 ${
-                  isActive
-                    ? 'bg-white/10 text-white shadow-[0_0_20px_rgba(99,102,241,0.25)]'
-                    : 'text-slate-300 hover:bg-white/5 hover:text-white'
-                }`}
-              >
-                {link.label}
-              </a>
-            )
-          })}
+        <nav className="hidden items-center gap-8 md:flex">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-sm text-slate-300 transition hover:text-white"
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
-        <button
-          className="rounded-xl border border-white/10 bg-white/5 p-2 text-slate-200 md:hidden"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Toggle Menu"
+        <a
+          href="#contact"
+          className="hidden rounded-full border border-cyan-400/30 bg-cyan-400/10 px-5 py-2 text-sm font-medium text-cyan-200 transition hover:bg-cyan-400/20 md:inline-flex"
         >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          Let’s Talk
+        </a>
+
+        <button
+          className="text-slate-200 md:hidden"
+          onClick={() => setOpen((prev) => !prev)}
+          aria-label="Toggle navigation"
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden border-t border-white/10 bg-slate-950/95 md:hidden"
-          >
-            <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="rounded-xl px-4 py-3 text-slate-300 transition hover:bg-white/5 hover:text-white"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <div className="border-t border-white/10 bg-slate-950/95 px-6 py-4 md:hidden">
+          <div className="flex flex-col gap-4">
+            {navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="text-sm text-slate-300 transition hover:text-white"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   )
 }

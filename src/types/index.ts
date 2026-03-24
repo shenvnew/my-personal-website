@@ -1,20 +1,52 @@
-export type ProjectCategory = 'All' | 'Web App' | 'UI/UX' | 'Backend'
+import type { LucideIcon } from 'lucide-react'
 
-export type Project = {
-  id: number
-  title: string
-  category: Exclude<ProjectCategory, 'All'>
-  image: string
-  description: string
-  fullDescription: string
-  tech: string[]
-  demo: string
-  github: string
+export interface NavItem {
+  label: string
+  href: string
 }
 
-export type ExperienceItem = {
-  year: string
-  title: string
-  organization: string
+export interface Stat {
+  label: string
+  value: string
   description: string
+}
+
+export interface Skill {
+  title: string
+  description: string
+  icon: LucideIcon
+}
+
+export interface Project {
+  id: number
+  title: string
+  category: string
+  description: string
+  longDescription: string
+  tech: string[]
+  image: string
+  github?: string
+  live?: string
+  featured?: boolean
+}
+
+export interface TimelineItem {
+  title: string
+  company: string
+  period: string
+  description: string
+  type: 'experience' | 'education'
+}
+
+export interface SocialLink {
+  label: string
+  href: string
+  icon: LucideIcon
+}
+
+export interface ContactItemData {
+  title: string
+  value: string
+  href?: string
+  icon: LucideIcon
 }

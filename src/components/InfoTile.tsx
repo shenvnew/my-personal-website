@@ -1,21 +1,19 @@
-import type React from 'react'
+import type { ReactNode } from 'react'
 
-type InfoTileProps = {
-  icon: React.ReactNode
+interface InfoTileProps {
+  icon: ReactNode
   title: string
-  text: string
+  description: string
 }
 
-export default function InfoTile({ icon, title, text }: InfoTileProps) {
+export default function InfoTile({ icon, title, description }: InfoTileProps) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-5">
-      <div className="mb-3 flex items-center gap-3">
-        <div className="rounded-xl border border-white/10 bg-white/5 p-2">
-          {icon}
-        </div>
-        <h4 className="font-semibold">{title}</h4>
+    <div className="group rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:bg-white/10">
+      <div className="mb-4 inline-flex rounded-xl border border-white/10 bg-slate-900/70 p-3 text-cyan-300">
+        {icon}
       </div>
-      <p className="text-sm leading-7 text-slate-300">{text}</p>
+      <h3 className="text-lg font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-6 text-slate-400">{description}</p>
     </div>
   )
 }
