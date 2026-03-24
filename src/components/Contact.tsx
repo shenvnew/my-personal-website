@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Send } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import emailjs from '@emailjs/browser'
 import { contactItems } from '../data/portfolioData'
 import { sectionFadeUp } from '../utils/Animations'
 import ContactItem from './ContactItem'
@@ -14,8 +15,12 @@ interface ContactFormValues {
   message: string
 }
 
+const EMAILJS_SERVICE_ID = 'service_ip61dlu'
+const EMAILJS_TEMPLATE_ID = 'template_itgx8sj'
+const EMAILJS_PUBLIC_KEY = 'YuZVfYtNOD1ruHNJG'
+
 export default function Contact() {
-  const [status, setStatus] = useState<string>('')
+  const [status, setStatus] = useState('')
 
   const {
     register,
@@ -28,22 +33,24 @@ export default function Contact() {
     setStatus('Sending...')
 
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to send message.')
-      }
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: data.name,
+          from_email: data.email,
+          message: data.message,
+        },
+        {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        },
+      )
 
       setStatus('Message sent successfully.')
       reset()
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : 'Something went wrong.')
+      console.error('EmailJS error:', error)
+      setStatus('Failed to send message. Please try again.')
     }
   }
 
@@ -83,7 +90,13 @@ export default function Contact() {
                 label="Email Address"
                 type="email"
                 placeholder="Enter your email"
-                {...register('email', { required: 'Email is required' })}
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^\S+@\S+\.\S+$/i,
+                    message: 'Enter a valid email address',
+                  },
+                })}
                 error={errors.email?.message}
               />
 

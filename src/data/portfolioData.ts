@@ -142,9 +142,9 @@ export const timeline: TimelineItem[] = [
 ]
 
 export const socialLinks: SocialLink[] = [
-  { label: 'GitHub', href: 'https://github.com/yourusername', icon: Github },
+  { label: 'GitHub', href: 'https://github.com/shenppp27', icon: Github },
   { label: 'LinkedIn', href: 'https://linkedin.com/in/yourusername', icon: Linkedin },
-  { label: 'Email', href: 'mailto:youremail@example.com', icon: Mail },
+  { label: 'Email', href: 'shenivan5@gmail.com', icon: Mail },
 ]
 
 export const contactItems: ContactItemData[] = [
@@ -156,8 +156,8 @@ export const contactItems: ContactItemData[] = [
   },
   {
     title: 'Phone',
-    value: '+63 900 000 0000',
-    href: 'tel:+639000000000',
+    value: '+63 9944904070',
+    href: 'tel:+639944904070',
     icon: Phone,
   },
   {
