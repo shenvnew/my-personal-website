@@ -24,7 +24,7 @@ export default function Projects() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-12 grid gap-6 lg:grid-cols-3"
+          className="mt-12 grid gap-6 lg:grid-cols-2"
         >
           {projects.map((project) => (
             <motion.article

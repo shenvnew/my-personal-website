@@ -9,7 +9,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <a href="#home" className="text-lg font-semibold tracking-wide text-white">
-          AW<span className="text-cyan-300">.</span>
+          jersey laging horni<span className="text-cyan-300">.</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
