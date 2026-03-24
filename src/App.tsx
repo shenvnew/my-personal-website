@@ -2,14 +2,14 @@ export default function App() {
   return (
     <div
       style={{
-        background: 'red',
-        color: 'white',
         minHeight: '100vh',
+        background: 'black',
+        color: 'white',
         padding: '40px',
-        fontSize: '40px',
+        fontSize: '32px',
       }}
     >
-      APP IS WORKING
+      APP WORKING
     </div>
   )
 }
